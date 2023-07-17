@@ -1,4 +1,4 @@
-extends Node2D
+extends Area2D
 
 @export var walking_speed = 50.0
 @export var movement_range = 300.0
@@ -22,6 +22,13 @@ func _get_health():
 func _set_health(new_health):
 	health = new_health
 	$HealthBar.value = health / max_health
+	
+func damage(value):
+	var new_health = health - value
+	if new_health <= 0:
+		new_health = 0
+		# TODO death
+	health = new_health
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -31,6 +38,10 @@ func _ready():
 	navigation_agent.target_desired_distance = 4.0
 	$RangeMarker.radius = movement_range
 	$HealthBar.value = health / max_health
+	self.area_entered.connect(_on_area_entered)
+
+func _on_area_entered(area):
+	print("entered area!")
 
 func set_navigation_map(m: RID):
 	navigation_agent.set_navigation_map(m)
@@ -50,6 +61,7 @@ func end_turn():
 	state = STATE.WAITING
 	$RangeMarker.hide()
 	unhighlight()
+	$BeamSpell.finish()
 	turn_ended.emit()
 
 func highlight(color: Color):
@@ -111,3 +123,13 @@ func _input(event):
 
 		elif event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
 			right_click(event.position)
+	elif state == STATE.CASTING:
+		if event is InputEventMouseButton and event.pressed:
+			if event.button_index == MOUSE_BUTTON_RIGHT:
+				state = STATE.MOVING
+				$BeamSpell.finish()
+			elif event.button_index == MOUSE_BUTTON_LEFT:
+				for mob in $BeamSpell.targetted:
+					mob.damage($BeamSpell.damage)
+				$BeamSpell.finish()
+				end_turn()
