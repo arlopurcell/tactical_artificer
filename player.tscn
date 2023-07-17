@@ -1,9 +1,12 @@
-[gd_scene load_steps=9 format=3 uid="uid://chpb4jyqs3ces"]
+[gd_scene load_steps=12 format=3 uid="uid://chpb4jyqs3ces"]
 
 [ext_resource type="Script" path="res://player.gd" id="1_mxhpc"]
 [ext_resource type="Texture2D" uid="uid://dmgb2321mssu8" path="res://assets/player.png" id="2_xdt7w"]
 [ext_resource type="Script" path="res://BeamSpell.gd" id="3_vdevf"]
 [ext_resource type="Script" path="res://TargetRect.gd" id="4_i31qc"]
+[ext_resource type="Script" path="res://SelectionCircle.gd" id="5_ux4px"]
+[ext_resource type="Script" path="res://RangeMarker.gd" id="6_57s3n"]
+[ext_resource type="Script" path="res://HealthBar.gd" id="7_xcjm4"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1togq"]
 size = Vector2(31, 32)
@@ -208,3 +211,16 @@ script = ExtResource("3_vdevf")
 visible = false
 z_index = 2
 script = ExtResource("4_i31qc")
+
+[node name="SelectionCircle" type="Node2D" parent="."]
+visible = false
+position = Vector2(2.08165e-12, 13)
+scale = Vector2(1, 0.5)
+script = ExtResource("5_ux4px")
+
+[node name="RangeMarker" type="Node2D" parent="."]
+visible = false
+script = ExtResource("6_57s3n")
+
+[node name="HealthBar" type="Node2D" parent="."]
+script = ExtResource("7_xcjm4")

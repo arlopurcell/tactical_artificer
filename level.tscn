@@ -5,7 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://c405a4mf8t08q" path="res://assets/tiles/TX Tileset Stone Ground.png" id="3_68w2r"]
 [ext_resource type="Texture2D" uid="uid://bpbby2mve2eim" path="res://assets/tiles/TX Tileset Wall.png" id="4_kdjmu"]
 [ext_resource type="PackedScene" uid="uid://chpb4jyqs3ces" path="res://player.tscn" id="5_f202y"]
-[ext_resource type="Script" path="res://RangeMarker.gd" id="6_qcy4b"]
+[ext_resource type="Script" path="res://TurnController.gd" id="6_pjjht"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_k03am"]
 vertices = PackedVector2Array(-16, -16, 16, -16, 16, 16, -16, 16)
@@ -1139,8 +1139,11 @@ layer_2/y_sort_origin = 0
 layer_2/z_index = 20
 layer_2/tile_data = PackedInt32Array(196623, 131080, 1, 196624, 196616, 1, 262160, 196616, 2, 327687, 65544, 3, 393223, 65544, 4, 327688, 131080, 3, 393224, 131080, 4, 327689, 131080, 3, 393225, 131080, 4, 327690, 131080, 3, 393226, 131080, 4, 327691, 131080, 3, 393227, 131080, 4, 327692, 131080, 3, 393228, 131080, 4, 327693, 131080, 3, 393229, 131080, 4, 327694, 131080, 3, 393230, 131080, 4, 327695, 131080, 3, 393231, 131080, 4, 327696, 196616, 3, 393232, 196616, 4, 917529, 786440, 2, 983065, 786440, 3, 1048601, 786440, 4, 917530, 851976, 2, 983066, 851976, 3, 1048602, 851976, 4, 196615, 65544, 1, 262151, 65544, 2, 196616, 131080, 1, 196617, 131080, 1, 196618, 131080, 1, 196619, 131080, 1, 196620, 131080, 1, 196621, 131080, 1, 196622, 131080, 1)
 
-[node name="Player" parent="." instance=ExtResource("5_f202y")]
+[node name="TurnController" type="Node" parent="."]
+script = ExtResource("6_pjjht")
+
+[node name="Player" parent="TurnController" instance=ExtResource("5_f202y")]
 position = Vector2(608, 346)
 
-[node name="PlayerRangeMarker" type="Node2D" parent="."]
-script = ExtResource("6_qcy4b")
+[node name="Player2" parent="TurnController" instance=ExtResource("5_f202y")]
+position = Vector2(225, 322)

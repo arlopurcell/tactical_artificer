@@ -5,12 +5,23 @@ extends Node2D
 
 @onready var navigation_agent: NavigationAgent2D = $NavigationAgent2D
 
+signal turn_ended
+
 var starting_pos: Vector2
 
 enum STATE {WAITING, MOVING, CASTING}
 
 var state = STATE.WAITING
 
+var health = 100.0 : set = _set_health, get = _get_health
+var max_health = 124.0
+
+func _get_health():
+	return health
+	
+func _set_health(new_health):
+	health = new_health
+	$HealthBar.value = health / max_health
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -18,16 +29,35 @@ func _ready():
 	# and the navigation layout.
 	navigation_agent.path_desired_distance = 4.0
 	navigation_agent.target_desired_distance = 4.0
+	$RangeMarker.radius = movement_range
+	$HealthBar.value = health / max_health
 
 func set_navigation_map(m: RID):
 	navigation_agent.set_navigation_map(m)
 	
 func start_turn():
-	starting_pos = global_position
 	state = STATE.MOVING
+	
+	# Set up range marker
+	starting_pos = position
+	$RangeMarker.position = starting_pos - position
+	$RangeMarker.queue_redraw()
+	$RangeMarker.show()
+	
+	highlight(Color.GREEN)
 	
 func end_turn():
 	state = STATE.WAITING
+	$RangeMarker.hide()
+	unhighlight()
+	turn_ended.emit()
+
+func highlight(color: Color):
+	$SelectionCircle.color = color
+	$SelectionCircle.show()
+
+func unhighlight():
+	$SelectionCircle.hide()
 
 	
 func right_click(movement_target: Vector2):
@@ -70,8 +100,14 @@ func _physics_process(delta):
 		navigation_agent.target_position = position
 	else:
 		translate(travel)
+	
+	$RangeMarker.position = starting_pos - position
 
 func _input(event):
-	if state == STATE.MOVING and event.is_action_pressed("cast1"):
-		state = STATE.CASTING
-		$BeamSpell.targeting()
+	if state == STATE.MOVING:
+		if event.is_action_pressed("cast1"):
+			state = STATE.CASTING
+			$BeamSpell.targeting()
+
+		elif event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
+			right_click(event.position)

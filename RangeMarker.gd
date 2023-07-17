@@ -13,3 +13,4 @@ func _set_radius(new_radius):
 	
 func _get_radius():
 	return radius
+
