@@ -1,52 +1,17 @@
-extends Area2D
-
-@export var walking_speed = 50.0
-@export var movement_range = 300.0
-
-@onready var navigation_agent: NavigationAgent2D = $NavigationAgent2D
-
-signal turn_ended
-
-var starting_pos: Vector2
+extends "res://mob.gd"
 
 enum STATE {WAITING, MOVING, CASTING}
 
 var state = STATE.WAITING
 
-var health = 100.0 : set = _set_health, get = _get_health
-var max_health = 124.0
-
-func _get_health():
-	return health
-	
-func _set_health(new_health):
-	health = new_health
-	$HealthBar.value = health / max_health
-	
-func damage(value):
-	var new_health = health - value
-	if new_health <= 0:
-		new_health = 0
-		# TODO death
-	health = new_health
-
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	# These values need to be adjusted for the actor's speed
-	# and the navigation layout.
-	navigation_agent.path_desired_distance = 4.0
-	navigation_agent.target_desired_distance = 4.0
+	super._ready()
 	$RangeMarker.radius = movement_range
-	$HealthBar.value = health / max_health
-	self.area_entered.connect(_on_area_entered)
 
-func _on_area_entered(area):
-	print("entered area!")
-
-func set_navigation_map(m: RID):
-	navigation_agent.set_navigation_map(m)
 	
 func start_turn():
+	super.start_turn()
 	state = STATE.MOVING
 	
 	# Set up range marker
@@ -62,57 +27,37 @@ func end_turn():
 	$RangeMarker.hide()
 	unhighlight()
 	$BeamSpell.finish()
-	turn_ended.emit()
+	super.end_turn()
 
-func highlight(color: Color):
-	$SelectionCircle.color = color
-	$SelectionCircle.show()
+func anim_walk_left():
+	$AnimationPlayer.play("walk")
+	$BodySprite.flip_h = true
+	$HairSprite.flip_h = true
+	$ShirtSprite.flip_h = true
+	$PantsSprite.flip_h = true
+	$ShoeSprite.flip_h = true
 
-func unhighlight():
-	$SelectionCircle.hide()
+func anim_walk_right():
+	$AnimationPlayer.play("walk")
+	$BodySprite.flip_h = false
+	$HairSprite.flip_h = false
+	$ShirtSprite.flip_h = false
+	$PantsSprite.flip_h = false
+	$ShoeSprite.flip_h = false
 
+func anim_idle():
+	$AnimationPlayer.play("walk")
+	$AnimationPlayer.stop(false)
+
+func anim_damage():
+  # TODO
+	pass
+
+func anim_die():
+	pass
 	
-func right_click(movement_target: Vector2):
-	if state == STATE.MOVING:
-		# Clip target to within movement range
-		if starting_pos.distance_to(movement_target) > movement_range:
-			return
-		
-		navigation_agent.target_position = movement_target
-		$AnimationPlayer.play("walk")
-		if movement_target.x < transform.get_origin().x:
-			$BodySprite.flip_h = true
-			$HairSprite.flip_h = true
-			$ShirtSprite.flip_h = true
-			$PantsSprite.flip_h = true
-			$ShoeSprite.flip_h = true
-		else:
-			$BodySprite.flip_h = false
-			$HairSprite.flip_h = false
-			$ShirtSprite.flip_h = false
-			$PantsSprite.flip_h = false
-			$ShoeSprite.flip_h = false
-	elif state == STATE.CASTING:
-		state = STATE.MOVING
-		$BeamSpell.finish()
-
 func _physics_process(delta):
-	if navigation_agent.is_navigation_finished():
-		$AnimationPlayer.stop(false)
-		return
-
-	var travel_raw = navigation_agent.get_next_path_position() - position
-	var travel
-	if travel_raw.length() < walking_speed * delta:
-		travel = travel_raw
-	else:
-		travel = (travel_raw).normalized() * walking_speed * delta
-	
-	if starting_pos.distance_to(position + travel) > movement_range:
-		navigation_agent.target_position = position
-	else:
-		translate(travel)
-	
+	super._physics_process(delta)	
 	$RangeMarker.position = starting_pos - position
 
 func _input(event):
@@ -121,8 +66,10 @@ func _input(event):
 			state = STATE.CASTING
 			$BeamSpell.targeting()
 
-		elif event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
-			right_click(event.position)
+		elif event is InputEventMouseButton \
+				and event.button_index == MOUSE_BUTTON_RIGHT \
+				and event.pressed:
+			move_to(event.position)
 	elif state == STATE.CASTING:
 		if event is InputEventMouseButton and event.pressed:
 			if event.button_index == MOUSE_BUTTON_RIGHT:

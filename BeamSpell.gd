@@ -31,7 +31,6 @@ func _set_range(new_range):
 	range = new_range
 	$TargetRect.range = range
 	$CollisionShape2D.shape.size.y = range
-	print("set range")
 
 func _get_range():
 	return range
@@ -40,7 +39,6 @@ func _set_width(new_width):
 	width = new_width
 	$TargetRect.width = width
 	$CollisionShape2D.shape.size.x = width
-	print("set width")
 
 func _get_width():
 	return width

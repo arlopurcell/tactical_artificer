@@ -9,7 +9,7 @@
 [ext_resource type="Script" path="res://HealthBar.gd" id="7_xcjm4"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1togq"]
-size = Vector2(31, 32)
+size = Vector2(30, 30)
 
 [sub_resource type="Animation" id="Animation_h650g"]
 resource_name = "stand"
