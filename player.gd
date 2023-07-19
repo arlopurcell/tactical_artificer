@@ -4,28 +4,16 @@ enum STATE {WAITING, MOVING, CASTING}
 
 var state = STATE.WAITING
 
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	super._ready()
-	$RangeMarker.radius = movement_range
-
 	
 func start_turn():
 	super.start_turn()
 	state = STATE.MOVING
 	
-	# Set up range marker
-	starting_pos = position
-	$RangeMarker.position = starting_pos - position
-	$RangeMarker.queue_redraw()
-	$RangeMarker.show()
-	
-	highlight(Color.GREEN)
+	$MobProps.highlight(Color.LIGHT_BLUE)
 	
 func end_turn():
 	state = STATE.WAITING
-	$RangeMarker.hide()
-	unhighlight()
+	$MobProps.unhighlight()
 	$BeamSpell.finish()
 	super.end_turn()
 
@@ -56,10 +44,6 @@ func anim_damage():
 func anim_die():
 	pass
 	
-func _physics_process(delta):
-	super._physics_process(delta)	
-	$RangeMarker.position = starting_pos - position
-
 func _input(event):
 	if state == STATE.MOVING:
 		if event.is_action_pressed("cast1"):
@@ -77,6 +61,6 @@ func _input(event):
 				$BeamSpell.finish()
 			elif event.button_index == MOUSE_BUTTON_LEFT:
 				for mob in $BeamSpell.targetted:
-					mob.damage($BeamSpell.damage)
+					mob.get_parent().damage($BeamSpell.damage)
 				$BeamSpell.finish()
 				end_turn()

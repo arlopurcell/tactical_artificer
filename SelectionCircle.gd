@@ -1,6 +1,6 @@
 extends Node2D
 
-@export var color = Color.GREEN : set = _set_color, get = _get_color
+@export var color = Color.BLUE : set = _set_color, get = _get_color
 
 var radius = 20.0
 

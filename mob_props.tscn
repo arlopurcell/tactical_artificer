@@ -1,0 +1,30 @@
+[gd_scene load_steps=6 format=3 uid="uid://crtc3n60tev3x"]
+
+[ext_resource type="Script" path="res://SelectionCircle.gd" id="1_ir0vm"]
+[ext_resource type="Script" path="res://mob_props.gd" id="1_q5v7n"]
+[ext_resource type="Script" path="res://RangeMarker.gd" id="2_0roiu"]
+[ext_resource type="Script" path="res://HealthBar.gd" id="3_y38kv"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_cnvfg"]
+size = Vector2(30, 30)
+
+[node name="MobProps" type="Area2D"]
+script = ExtResource("1_q5v7n")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_cnvfg")
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
+
+[node name="SelectionCircle" type="Node2D" parent="."]
+visible = false
+position = Vector2(2.08165e-12, 10)
+scale = Vector2(1, 0.5)
+script = ExtResource("1_ir0vm")
+
+[node name="RangeMarker" type="Node2D" parent="."]
+visible = false
+script = ExtResource("2_0roiu")
+
+[node name="HealthBar" type="Node2D" parent="."]
+script = ExtResource("3_y38kv")

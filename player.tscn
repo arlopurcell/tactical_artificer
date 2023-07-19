@@ -1,15 +1,10 @@
-[gd_scene load_steps=13 format=3 uid="uid://chpb4jyqs3ces"]
+[gd_scene load_steps=10 format=3 uid="uid://chpb4jyqs3ces"]
 
 [ext_resource type="Script" path="res://player.gd" id="1_mxhpc"]
 [ext_resource type="Texture2D" uid="uid://dmgb2321mssu8" path="res://assets/player.png" id="2_xdt7w"]
 [ext_resource type="Script" path="res://BeamSpell.gd" id="3_vdevf"]
 [ext_resource type="Script" path="res://TargetRect.gd" id="4_i31qc"]
-[ext_resource type="Script" path="res://SelectionCircle.gd" id="5_ux4px"]
-[ext_resource type="Script" path="res://RangeMarker.gd" id="6_57s3n"]
-[ext_resource type="Script" path="res://HealthBar.gd" id="7_xcjm4"]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_1togq"]
-size = Vector2(30, 30)
+[ext_resource type="PackedScene" uid="uid://crtc3n60tev3x" path="res://mob_props.tscn" id="5_8lp6l"]
 
 [sub_resource type="Animation" id="Animation_h650g"]
 resource_name = "stand"
@@ -152,9 +147,6 @@ size = Vector2(10, 200)
 script = ExtResource("1_mxhpc")
 metadata/_edit_group_ = true
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("RectangleShape2D_1togq")
-
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
 "": SubResource("AnimationLibrary_e1hkh")
@@ -205,8 +197,6 @@ hframes = 8
 vframes = 12
 frame = 67
 
-[node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
-
 [node name="BeamSpell" type="Area2D" parent="."]
 collision_layer = 128
 script = ExtResource("3_vdevf")
@@ -223,15 +213,4 @@ rotation = 1.5708
 shape = SubResource("RectangleShape2D_cln8p")
 debug_color = Color(0.917647, 0, 0.705882, 0.65098)
 
-[node name="SelectionCircle" type="Node2D" parent="."]
-visible = false
-position = Vector2(2.08165e-12, 13)
-scale = Vector2(1, 0.5)
-script = ExtResource("5_ux4px")
-
-[node name="RangeMarker" type="Node2D" parent="."]
-visible = false
-script = ExtResource("6_57s3n")
-
-[node name="HealthBar" type="Node2D" parent="."]
-script = ExtResource("7_xcjm4")
+[node name="MobProps" parent="." instance=ExtResource("5_8lp6l")]
