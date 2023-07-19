@@ -9,6 +9,13 @@ script/source = "extends \"res://mob.gd\"
 func _ready():
 	$AnimatedSprite2D.animation_finished.connect(anim_idle)
 
+func die():
+	$AnimatedSprite2D.animation_finished.connect(_on_death_anim_finished)
+	super.die()
+
+func _on_death_anim_finished():
+	hide()
+
 func start_turn():
 	super.start_turn()
 	end_turn()

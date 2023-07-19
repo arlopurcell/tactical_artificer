@@ -16,6 +16,7 @@ var starting_pos: Vector2
 var health = 100.0 : set = _set_health, get = _get_health
 var max_health = 124.0
 
+var dead = false
 
 func _get_health():
 	return health
@@ -32,9 +33,12 @@ func damage(value):
 	var new_health = health - value
 	if new_health <= 0:
 		new_health = 0
-		anim_death()
-		# TODO death
+		die()
 	health = new_health
+
+func die():
+	anim_death()
+	dead = true
 
 func _ready():
 	navigation_agent.path_desired_distance = 4.0
@@ -49,7 +53,6 @@ func set_navigation_map(m: RID):
 	navigation_agent.set_navigation_map(m)
 	
 func navigation_finished():
-	print("done moving")
 	anim_idle()
 
 func start_turn():
