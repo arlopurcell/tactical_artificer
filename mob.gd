@@ -1,6 +1,6 @@
 extends Node2D
 
-@export var walking_speed = 50.0
+@export var walking_speed = 100.0
 @export var movement_range = 300.0
 
 @onready
@@ -44,7 +44,7 @@ func _ready():
 	navigation_agent.path_desired_distance = 4.0
 	navigation_agent.target_desired_distance = 4.0
 	
-	navigation_agent.navigation_finished.connect(navigation_finished)
+	navigation_agent.navigation_finished.connect(_on_navigation_finished)
 	
 	mp("HealthBar").value = health / max_health
 	mp("RangeMarker").radius = movement_range
@@ -52,7 +52,7 @@ func _ready():
 func set_navigation_map(m: RID):
 	navigation_agent.set_navigation_map(m)
 	
-func navigation_finished():
+func _on_navigation_finished():
 	anim_idle()
 
 func start_turn():
