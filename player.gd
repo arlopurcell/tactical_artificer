@@ -4,6 +4,9 @@ enum STATE {WAITING, MOVING, CASTING}
 
 var state = STATE.WAITING
 
+func _ready():
+	$MobProps.healthbar_color = Color.GREEN
+	super._ready()
 	
 func start_turn():
 	super.start_turn()
@@ -41,7 +44,7 @@ func anim_damage():
   # TODO
 	pass
 
-func anim_die():
+func anim_death():
 	pass
 	
 func _input(event):

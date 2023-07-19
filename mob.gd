@@ -32,18 +32,25 @@ func damage(value):
 	var new_health = health - value
 	if new_health <= 0:
 		new_health = 0
-		anim_die()
+		anim_death()
 		# TODO death
 	health = new_health
 
 func _ready():
 	navigation_agent.path_desired_distance = 4.0
 	navigation_agent.target_desired_distance = 4.0
+	
+	navigation_agent.navigation_finished.connect(navigation_finished)
+	
 	mp("HealthBar").value = health / max_health
 	mp("RangeMarker").radius = movement_range
 
 func set_navigation_map(m: RID):
 	navigation_agent.set_navigation_map(m)
+	
+func navigation_finished():
+	print("done moving")
+	anim_idle()
 
 func start_turn():
 	# Set up range marker
@@ -68,7 +75,7 @@ func anim_idle():
 func anim_damage():
 	pass
 
-func anim_die():
+func anim_death():
 	pass
 
 func move_to(movement_target: Vector2):
@@ -84,7 +91,6 @@ func move_to(movement_target: Vector2):
 
 func _physics_process(delta):
 	if navigation_agent.is_navigation_finished():
-		anim_idle()
 		return
 
 	var travel_raw = navigation_agent.get_next_path_position() - position
@@ -95,6 +101,7 @@ func _physics_process(delta):
 		travel = (travel_raw).normalized() * walking_speed * delta
 	
 	if starting_pos.distance_to(position + travel) > movement_range:
+		print("finished moving")
 		navigation_agent.target_position = position
 	else:
 		translate(travel)

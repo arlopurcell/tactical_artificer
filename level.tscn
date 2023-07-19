@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://dqdnte06k8e2x"]
+[gd_scene load_steps=19 format=3 uid="uid://dqdnte06k8e2x"]
 
 [ext_resource type="Script" path="res://Level.gd" id="1_8km51"]
 [ext_resource type="Texture2D" uid="uid://dq0ly0vrw76tg" path="res://assets/tiles/TX Tileset Grass.png" id="2_m3iyg"]
@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://bpbby2mve2eim" path="res://assets/tiles/TX Tileset Wall.png" id="4_kdjmu"]
 [ext_resource type="PackedScene" uid="uid://chpb4jyqs3ces" path="res://player.tscn" id="5_f202y"]
 [ext_resource type="Script" path="res://TurnController.gd" id="6_pjjht"]
+[ext_resource type="PackedScene" uid="uid://bvkms8w5ntha3" path="res://fire_elemental.tscn" id="7_fbecv"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_k03am"]
 vertices = PackedVector2Array(-16, -16, 16, -16, 16, 16, -16, 16)
@@ -1147,3 +1148,6 @@ position = Vector2(608, 346)
 
 [node name="Player2" parent="TurnController" instance=ExtResource("5_f202y")]
 position = Vector2(225, 322)
+
+[node name="FireElemental" parent="TurnController" instance=ExtResource("7_fbecv")]
+position = Vector2(307, 417)
