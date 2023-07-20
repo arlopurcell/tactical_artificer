@@ -15,8 +15,4 @@ func end_turn():
 	
 func _on_turn_ended():
 	turn_index = (turn_index + 1) % get_child_count()
-	var child = get_child(turn_index)
-	if child.dead:
-		_on_turn_ended()
-	else:
-		child.start_turn()
+	get_child(turn_index).start_turn()

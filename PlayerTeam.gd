@@ -1,11 +1,8 @@
-extends Node2D
+extends Node
 
 signal turn_ended
 
 var players = []
-
-# TurnController checks if we're dead, lol. we handle that ourselves
-var dead = false
 
 func _ready():
 	for child in get_children():

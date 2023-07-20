@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://dqdnte06k8e2x"]
+[gd_scene load_steps=20 format=3 uid="uid://dqdnte06k8e2x"]
 
 [ext_resource type="Script" path="res://Level.gd" id="1_8km51"]
 [ext_resource type="Texture2D" uid="uid://dq0ly0vrw76tg" path="res://assets/tiles/TX Tileset Grass.png" id="2_m3iyg"]
@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://chpb4jyqs3ces" path="res://player.tscn" id="5_f202y"]
 [ext_resource type="Script" path="res://TurnController.gd" id="6_pjjht"]
 [ext_resource type="Script" path="res://PlayerTeam.gd" id="7_h4gai"]
+[ext_resource type="Script" path="res://EnemyTeam.gd" id="7_rpney"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_k03am"]
 vertices = PackedVector2Array(-16, -16, 16, -16, 16, 16, -16, 16)
@@ -1155,7 +1156,7 @@ layer_2/tile_data = PackedInt32Array(393223, 65544, 4, 327687, 65544, 3, 327688,
 [node name="TurnController" type="Node" parent="."]
 script = ExtResource("6_pjjht")
 
-[node name="PlayerTeam" type="Node2D" parent="TurnController"]
+[node name="PlayerTeam" type="Node" parent="TurnController"]
 script = ExtResource("7_h4gai")
 
 [node name="Player2" parent="TurnController/PlayerTeam" instance=ExtResource("5_f202y")]
@@ -1163,3 +1164,6 @@ position = Vector2(225, 322)
 
 [node name="Player" parent="TurnController/PlayerTeam" instance=ExtResource("5_f202y")]
 position = Vector2(650, 160)
+
+[node name="EnemyTeam" type="Node" parent="TurnController"]
+script = ExtResource("7_rpney")
