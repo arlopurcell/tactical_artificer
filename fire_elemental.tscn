@@ -6,27 +6,61 @@
 [sub_resource type="GDScript" id="GDScript_btsh0"]
 script/source = "extends \"res://mob.gd\"
 	
+var closest_player = null
+var attack_range = 40.
+var attack_damage = 20.
+	
 func _ready():
 	$AnimatedSprite2D.animation_finished.connect(anim_idle)
+	super._ready()
 
 func die():
 	$AnimatedSprite2D.animation_finished.connect(_on_death_anim_finished)
 	super.die()
 
 func _on_death_anim_finished():
+	$AnimatedSprite2D.animation_finished.connect(anim_idle)
 	hide()
 
 func start_turn():
 	super.start_turn()
+	closest_player = null
+	print(visible_mobs)
+	for mob in visible_mobs:
+		if mob.player_team:
+			if closest_player == null \\
+				or global_position.distance_to(mob.global_position) \\
+					< global_position.distance_to(closest_player):
+				closest_player = mob
+	
+	if closest_player == null:
+		var dest = Vector2.UP \\
+			.rotated(randf() * 2 * PI).normalized() \\
+			* randf() * movement_range
+		move_to(dest)
+	else:
+		move_to(closest_player.global_position)
+
+func _on_navigation_finished():
+	super._on_navigation_finished()
+	if closest_player == null:
+		end_turn()
+	elif global_position.distance_to(closest_player.global_position) < attack_range:
+		$AnimatedSprite2D.play(\"attack\")
+		$AnimatedSprite2D.animation_finished.connect(_on_attack_finished)	
+
+func _on_attack_finished():
+	closest_player.damage(attack_damage)
+	$AnimatedSprite2D.animation_finished.connect(anim_idle)
 	end_turn()
 
 func anim_walk_left():
 	$AnimatedSprite2D.play(\"walk\")
-	$BodySprite.flip_h = true
+	$AnimatedSprite2D.flip_h = true
 
 func anim_walk_right():
 	$AnimatedSprite2D.play(\"walk\")
-	$BodySprite.flip_h = false
+	$AnimatedSprite2D.flip_h = false
 
 func anim_idle():
 	$AnimatedSprite2D.play(\"idle\")

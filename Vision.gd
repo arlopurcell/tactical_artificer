@@ -16,11 +16,22 @@ var _last_position = null
 @onready var collider = $VisionArea2D.find_child("Collider")
 @onready var renderer = $Renderer
 
+# This is defer the first vision calculation until things are ready 
+var initialized = false
+
+func _ready():
+	call_deferred("init")
+	
+func init():
+	initialized = true
+
 func _physics_process(_delta: float) -> void:
 	recalculate_vision()
 
-func recalculate_vision():	
-	var has_position_changed = _last_position == null or (global_position - _last_position).length() > static_threshold
+func recalculate_vision(force = false):
+	if not initialized:
+		return
+	var has_position_changed = force or _last_position == null or (global_position - _last_position).length() > static_threshold
 	if not has_position_changed:
 		return
 	_last_position = global_position

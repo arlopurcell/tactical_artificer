@@ -1160,14 +1160,11 @@ script = ExtResource("6_pjjht")
 [node name="PlayerTeam" type="Node" parent="TurnController"]
 script = ExtResource("7_h4gai")
 
-[node name="Player2" parent="TurnController/PlayerTeam" instance=ExtResource("5_f202y")]
-position = Vector2(225, 322)
-
 [node name="Player" parent="TurnController/PlayerTeam" instance=ExtResource("5_f202y")]
-position = Vector2(650, 160)
+position = Vector2(410, 86)
 
 [node name="EnemyTeam" type="Node" parent="TurnController"]
 script = ExtResource("7_rpney")
 
 [node name="FireElemental" parent="TurnController/EnemyTeam" instance=ExtResource("9_cvpbs")]
-position = Vector2(382, 56)
+position = Vector2(684, 284)

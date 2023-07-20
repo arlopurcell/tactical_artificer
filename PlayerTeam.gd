@@ -20,6 +20,7 @@ func deactivate_all():
 	
 
 func start_turn():
+	print("player's turn")
 	for player in players:
 		player.start_turn()
 
