@@ -30,7 +30,6 @@ func start_turn():
 			return
 	push_error("All the players are dead?")
 
-	
 func end_turn():
 	for player in players:
 		player.end_turn()

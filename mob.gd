@@ -20,10 +20,13 @@ var dead = false
 
 var player_team = false
 
+var visible_mobs = {}
+
 func _get_health():
 	return health
 	
 func mp(prop: String):
+	# TODO refactor to use $MopProps/HealthBar syntax
 	return props.find_child(prop)
 	
 func _set_health(new_health):
@@ -50,6 +53,17 @@ func _ready():
 	
 	mp("HealthBar").value = health / max_health
 	mp("RangeMarker").radius = movement_range
+	
+	props.vision_area.area_entered.connect(area_entered_vision)
+	props.vision_area.area_exited.connect(area_exited_vision)
+	
+func area_entered_vision(area):
+	var parent = area.get_parent()
+	if parent.find_child("MobProps") != null:
+		visible_mobs[parent] = null
+
+func area_exited_vision(area):
+	visible_mobs.erase(area.get_parent())
 
 func set_navigation_map(m: RID):
 	navigation_agent.set_navigation_map(m)
@@ -109,17 +123,6 @@ func _physics_process(delta):
 		translate(travel)
 
 	mp("RangeMarker").position = starting_pos - position
-
-func visible_mobs():
-	for d in get_world_2d().direct_space_state.intersect_shape(vision_collision_params()):
-		# TODO filter by mobs and return
-		var area = d["collider"]
-		if area != get_parent().find_child("MobProps"):
-			pass
-
-func vision_collision_params():
-	# TODO
-	pass
 	
 func handle_click():
 	pass

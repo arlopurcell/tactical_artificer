@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://dqdnte06k8e2x"]
+[gd_scene load_steps=21 format=3 uid="uid://dqdnte06k8e2x"]
 
 [ext_resource type="Script" path="res://Level.gd" id="1_8km51"]
 [ext_resource type="Texture2D" uid="uid://dq0ly0vrw76tg" path="res://assets/tiles/TX Tileset Grass.png" id="2_m3iyg"]
@@ -8,6 +8,7 @@
 [ext_resource type="Script" path="res://TurnController.gd" id="6_pjjht"]
 [ext_resource type="Script" path="res://PlayerTeam.gd" id="7_h4gai"]
 [ext_resource type="Script" path="res://EnemyTeam.gd" id="7_rpney"]
+[ext_resource type="PackedScene" uid="uid://bvkms8w5ntha3" path="res://fire_elemental.tscn" id="9_cvpbs"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_k03am"]
 vertices = PackedVector2Array(-16, -16, 16, -16, 16, 16, -16, 16)
@@ -1167,3 +1168,6 @@ position = Vector2(650, 160)
 
 [node name="EnemyTeam" type="Node" parent="TurnController"]
 script = ExtResource("7_rpney")
+
+[node name="FireElemental" parent="TurnController/EnemyTeam" instance=ExtResource("9_cvpbs")]
+position = Vector2(382, 56)

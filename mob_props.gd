@@ -1,6 +1,10 @@
 extends Area2D
 
-@export var healthbar_color: Color = Color.GREEN : set = _set_healthbar_color, get = _get_healthbar_color
+@export 
+var healthbar_color: Color = Color.GREEN : set = _set_healthbar_color, get = _get_healthbar_color
+
+@onready
+var vision_area = $Vision/VisionArea2D
 
 func _set_healthbar_color(new_healthbar_color):
 	healthbar_color = new_healthbar_color
@@ -15,4 +19,3 @@ func highlight(color: Color):
 
 func unhighlight():
 	$SelectionCircle.hide()
-
