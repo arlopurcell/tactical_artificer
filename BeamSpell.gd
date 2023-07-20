@@ -19,13 +19,15 @@ func _ready():
 func _on_area_entered(area):
 	# TODO if it's a targetable thing
 	if state == STATE.TARGETING and area != get_parent().find_child("MobProps"):
-		targetted[area] = null
-		area.highlight(Color.RED)
+		if area.find_child("MobProps") != null:
+			targetted[area] = null
+			area.highlight(Color.RED)
 
 func _on_area_exited(area):
 	if state == STATE.TARGETING and area != get_parent().find_child("MobProps"):
-		targetted.erase(area)
-		area.unhighlight()
+		if area.find_child("MobProps") != null:
+			targetted.erase(area)
+			area.unhighlight()
 	
 func _set_range(new_range):
 	range = new_range

@@ -6,6 +6,7 @@ var state = STATE.INACTIVE
 
 func _ready():
 	$MobProps.healthbar_color = Color.GREEN
+	player_team = true
 	super._ready()
 	
 func start_turn():

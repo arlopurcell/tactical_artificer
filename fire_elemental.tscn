@@ -326,7 +326,7 @@ z_index = 5
 position = Vector2(2, -16)
 scale = Vector2(2, 2)
 sprite_frames = SubResource("SpriteFrames_4iutw")
-animation = &"idle"
+animation = &"attack"
 autoplay = "idle"
 
 [node name="MobProps" parent="." instance=ExtResource("2_s4hps")]

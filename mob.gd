@@ -18,6 +18,8 @@ var max_health = 124.0
 
 var dead = false
 
+var player_team = false
+
 func _get_health():
 	return health
 	
@@ -110,3 +112,14 @@ func _physics_process(delta):
 		translate(travel)
 
 	mp("RangeMarker").position = starting_pos - position
+
+func visible_mobs():
+	for d in get_world_2d().direct_space_state.intersect_shape(vision_collision_params()):
+		# TODO filter by mobs and return
+		var area = d["collider"]
+		if area != get_parent().find_child("MobProps"):
+			pass
+
+func vision_collision_params():
+	# TODO
+	pass
