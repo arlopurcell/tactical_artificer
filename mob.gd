@@ -59,7 +59,7 @@ func _ready():
 	
 func area_entered_vision(area):
 	var parent = area.get_parent()
-	if parent.find_child("MobProps") != null:
+	if parent.find_child("MobProps") != null and parent.dead == false:
 		visible_mobs[parent] = null
 
 func area_exited_vision(area):

@@ -9,7 +9,6 @@ func _ready():
 		child.turn_ended.connect(_on_turn_ended)
 	
 func start_turn():
-	print("enemy turn")
 	turn_index = -1
 	_on_turn_ended()
 

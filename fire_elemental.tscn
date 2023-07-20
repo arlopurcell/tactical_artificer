@@ -25,7 +25,6 @@ func _on_death_anim_finished():
 func start_turn():
 	super.start_turn()
 	closest_player = null
-	print(visible_mobs)
 	for mob in visible_mobs:
 		if mob.player_team:
 			if closest_player == null \\

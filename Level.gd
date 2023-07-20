@@ -1,6 +1,5 @@
 extends Node2D
 
-
 func end_turn():
 	$TurnController.end_turn()
 
@@ -12,7 +11,8 @@ func _physics_process(delta):
 			visible_mobs[mob] = null
 	
 	for mob in $TurnController/EnemyTeam.get_children():
-		if mob in visible_mobs:
+		# TODO this hides mobs before their death animation and IDK how to fix it
+		if not mob.dead and mob in visible_mobs:
 			mob.show()
 		else:
 			mob.hide()
@@ -27,8 +27,13 @@ func _input(event):
 		p.collide_with_areas = true
 		p.collision_mask = 1
 
-		var targets = get_world_2d().direct_space_state\
+		var nodes = get_world_2d().direct_space_state \
 			.intersect_point(p)
+			
+		var targets = []
+		for node in nodes:
+			if node.has_child("MobProps"):
+				targets.append(node)
 
 		match targets.size():
 			0: pass
