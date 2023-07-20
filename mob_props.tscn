@@ -36,6 +36,7 @@ script = ExtResource("5_3mhk5")
 [node name="Renderer" type="Polygon2D" parent="Vision"]
 color = Color(1, 1, 1, 0.254902)
 
-[node name="Area2D" type="Area2D" parent="Vision"]
+[node name="VisionArea2D" type="Area2D" parent="Vision"]
+collision_layer = 128
 
-[node name="Collider" type="CollisionPolygon2D" parent="Vision/Area2D"]
+[node name="Collider" type="CollisionPolygon2D" parent="Vision/VisionArea2D"]

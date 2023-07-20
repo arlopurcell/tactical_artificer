@@ -1,25 +1,14 @@
 extends "res://mob.gd"
 
-enum STATE {WALKING, READY, CASTING, INACTIVE}
+enum STATE {WALKING, READY, CASTING}
+var active = false
 
-var state = STATE.INACTIVE
+var state = STATE.READY
 
 func _ready():
 	$MobProps.healthbar_color = Color.GREEN
 	player_team = true
 	super._ready()
-	
-func start_turn():
-	super.start_turn()
-	state = STATE.READY
-	
-	$MobProps.highlight(Color.LIGHT_BLUE)
-	
-func end_turn():
-	state = STATE.INACTIVE
-	$MobProps.unhighlight()
-	$BeamSpell.finish()
-	super.end_turn()
 
 func _on_navigation_finished():
 	super._on_navigation_finished()
@@ -46,36 +35,44 @@ func anim_idle():
 	$AnimationPlayer.stop(false)
 
 func anim_damage():
-  # TODO
+	# TODO
 	pass
 
 func anim_death():
 	pass
 	
 func _input(event):
-	if state == STATE.READY:
-		if event.is_action_pressed("cast1"):
-			state = STATE.CASTING
-			$BeamSpell.targeting()
+	if not active:
+		return
+	
+	if event is InputEventMouseButton:
+		if event.pressed:
+			match [event.button_index, state]:
+				[MOUSE_BUTTON_RIGHT, STATE.READY], [MOUSE_BUTTON_RIGHT, STATE.WALKING]:
+					state = STATE.WALKING
+					move_to(event.position)
+				[MOUSE_BUTTON_RIGHT, STATE.CASTING]:
+					state = STATE.READY
+					$BeamSpell.finish()
+				[MOUSE_BUTTON_LEFT, STATE.CASTING]:
+					for mob in $BeamSpell.targetted:
+						mob.get_parent().damage($BeamSpell.damage)
+					$BeamSpell.finish()
+					end_turn()
+	elif event.is_action_pressed("cast1"):
+		match state:
+			STATE.READY, STATE.CASTING:
+				state = STATE.CASTING
+				$BeamSpell.targeting()
 
-		elif event is InputEventMouseButton \
-				and event.button_index == MOUSE_BUTTON_RIGHT \
-				and event.pressed:
-			state = STATE.WALKING
-			move_to(event.position)
-	elif state == STATE.CASTING:
-		if event is InputEventMouseButton and event.pressed:
-			if event.button_index == MOUSE_BUTTON_RIGHT:
-				state = STATE.READY
-				$BeamSpell.finish()
-			elif event.button_index == MOUSE_BUTTON_LEFT:
-				for mob in $BeamSpell.targetted:
-					mob.get_parent().damage($BeamSpell.damage)
-				$BeamSpell.finish()
-				end_turn()
-	elif state == STATE.WALKING:
-		if event is InputEventMouseButton \
-				and event.button_index == MOUSE_BUTTON_RIGHT \
-				and event.pressed:
-			move_to(event.position)
-		
+func handle_click():
+	get_parent().deactivate_all()
+	active = true
+	state = STATE.READY
+	$MobProps.highlight(Color.LIGHT_BLUE)
+
+func deactivate():
+	active = false
+	$MobProps.unhighlight()
+	$BeamSpell.finish()
+	

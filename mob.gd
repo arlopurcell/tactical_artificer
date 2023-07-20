@@ -60,6 +60,7 @@ func _on_navigation_finished():
 func start_turn():
 	# Set up range marker
 	starting_pos = position
+	
 	mp("RangeMarker").position = starting_pos - position
 	mp("RangeMarker").queue_redraw()
 	mp("RangeMarker").show()
@@ -84,10 +85,6 @@ func anim_death():
 	pass
 
 func move_to(movement_target: Vector2):
-	# TODO check this out it looks wrong. remove?
-	if starting_pos.distance_to(movement_target) > movement_range:
-		return
-	
 	navigation_agent.target_position = movement_target
 	if movement_target.x < transform.get_origin().x:
 		anim_walk_left()
@@ -106,7 +103,7 @@ func _physics_process(delta):
 		travel = (travel_raw).normalized() * walking_speed * delta
 	
 	if starting_pos.distance_to(position + travel) > movement_range:
-		print("finished moving")
+
 		navigation_agent.target_position = position
 	else:
 		translate(travel)
@@ -122,4 +119,7 @@ func visible_mobs():
 
 func vision_collision_params():
 	# TODO
+	pass
+	
+func handle_click():
 	pass

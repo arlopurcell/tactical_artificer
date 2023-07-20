@@ -17,17 +17,22 @@ func _ready():
 	self.area_exited.connect(_on_area_exited)
 	
 func _on_area_entered(area):
-	# TODO if it's a targetable thing
-	if state == STATE.TARGETING and area != get_parent().find_child("MobProps"):
-		if area.find_child("MobProps") != null:
-			targetted[area] = null
-			area.highlight(Color.RED)
+	if state == STATE.TARGETING \
+			# stop hitting yourself
+			and area != get_parent().find_child("MobProps") \
+			# Can only target mobs (defined as has MobProps)
+			and area.get_parent().find_child("MobProps") != null:
+		targetted[area] = null
+		area.highlight(Color.RED)
 
 func _on_area_exited(area):
-	if state == STATE.TARGETING and area != get_parent().find_child("MobProps"):
-		if area.find_child("MobProps") != null:
-			targetted.erase(area)
-			area.unhighlight()
+	if state == STATE.TARGETING \
+			# stop hitting yourself
+			and area != get_parent().find_child("MobProps") \
+			# Can only untarget mobs (defined as has MobProps)
+			and area.get_parent().find_child("MobProps") != null:
+		targetted.erase(area)
+		area.unhighlight()
 	
 func _set_range(new_range):
 	range = new_range
@@ -65,7 +70,7 @@ func finish():
 func collision_params():
 	var params = PhysicsShapeQueryParameters2D.new()
 	params.collide_with_areas = true
-	params.collision_mask = collision_mask
+	params.collision_mask = 1
 	params.exclude = [get_parent().get_rid()]
 	params.shape = $CollisionShape2D.shape
 	params.transform = $CollisionShape2D.global_transform
