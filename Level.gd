@@ -32,13 +32,14 @@ func _input(event):
 			
 		var targets = []
 		for node in nodes:
-			if node.has_child("MobProps"):
-				targets.append(node)
+			var target = node["collider"].get_parent()
+			if target.find_child("MobProps") != null:
+				targets.append(target)
 
 		match targets.size():
 			0: pass
-			1: targets[0]["collider"].get_parent().handle_click()
+			1: targets[0].handle_click()
 			_:
 				push_error("Multiple targets clicked")
 				for t in targets:
-					t["collider"].get_parent().handle_click()
+					t.handle_click()

@@ -11,6 +11,7 @@ func start_turns():
 	get_child(turn_index).start_turn()
 	
 func end_turn():
+	# TODO disable end turn button if it's not the player turn
 	get_child(turn_index).end_turn()
 	
 func _on_turn_ended():
